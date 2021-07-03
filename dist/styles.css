@@ -1,0 +1,26 @@
+.content{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#projects, #add-pr {
+  grid-column: 1;
+}
+
+#tasks, #add-ts{
+  grid-column: 2;
+}
+
+.project {
+  border: none;
+  outline: none;
+  padding: 10px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Style the active class (and buttons on mouse-over) */
+.active, .project:hover {
+  background-color: #666;
+  color: white;
+}
