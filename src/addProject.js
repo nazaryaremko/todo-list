@@ -19,17 +19,37 @@ function renderProjects() {
       }
 }
 
+function deleteProject(id) {
+  for (var i = 0; i < projects.childNodes.length; i++) {
+    if (projects.childNodes[i].id == id) {
+      projects.childNodes[i].remove()
+    }
+  }
+  for (var i = 0; i < all_projects.length; i++) {
+    if (all_projects[i].title == id) {
+      all_projects.splice(i,1)
+    }
+  }
+  console.log(all_projects)
+}
+
 function addProject() {
     var projects = document.getElementById('projects')
     var addBtn = document.getElementById('add-pr')
 
+    var deleteBtn = document.createElement('button')
+    deleteBtn.setAttribute('class', 'delete-pr')
+
     var newProject = createProject(prompt('Name'), '', '', '', [])
     all_projects.push(newProject)
 
+    var divider = document.createElement('div')
     var projectTab = document.createElement('button')
     projectTab.setAttribute('class', 'project')
-    projectTab.setAttribute('id', String(newProject.title))
+    divider.setAttribute('id', String(newProject.title))
     projectTab.innerHTML = newProject.title
+
+    deleteBtn.innerText = 'Delete the project'
 
     projectTab.addEventListener('click', function(e) {
         if (e.target) {
@@ -37,7 +57,15 @@ function addProject() {
         }
     })
 
-    projects.insertBefore(projectTab, addBtn)
+    deleteBtn.addEventListener('click', function(e) {
+      if (e.target) {
+          deleteProject(divider.id)
+      }
+  })
+
+    divider.appendChild(projectTab)
+    divider.appendChild(deleteBtn)
+    projects.insertBefore(divider, addBtn)
     renderProjects();
 }
 

@@ -1,57 +1,48 @@
 import createTask from './createTask.js';
+import deleteTask from './deleteTask.js';
 import {all_projects} from './addProject.js';
 
-function changeStatus (currentActiveProject, task) {
-    console.log(currentActiveProject.todolist)
-    console.log(task)
 
-    for (var i = 0; i < currentActiveProject.todolist.length; i++) {
-        if (task.id == currentActiveProject.todolist[i].title && currentActiveProject.todolist[i].status == 'not done') {
-            currentActiveProject.todolist[i].status = 'done'
-        } else if (task.id == currentActiveProject.todolist[i].title && currentActiveProject.todolist[i].status == 'done') {
-            currentActiveProject.todolist[i].status = 'not done'
-        }
-    }
-
-}
 function addTask () {
     var newTask = createTask(prompt('Name'), '', '', 'not done')
     var tasks = document.getElementById('tasks')
     var addtaskBtn = document.getElementById('add-ts')
 
+    var deleteBtnT = document.createElement('button')
+    deleteBtnT.setAttribute('class', 'delete-task')
+    deleteBtnT.innerText = 'Delete the task'
+
     var container = document.getElementById('projects')
     var currentButton = container.getElementsByClassName('project active')
     
     for (var i = 0; i < all_projects.length; i++) {
-        if (currentButton.item(0).id == all_projects[i].title) {
+        if (currentButton.item(0).parentNode.id == all_projects[i].title) {
             var currentActiveProject = all_projects[i]
         }
     }
     currentActiveProject.todolist.push(newTask)
-    console.log(all_projects)
 
+    deleteBtnT.addEventListener('click', function(e) {
+        if (e.target) {
+            deleteTask(e.target)
+        }
+    })
+
+    var divider = document.createElement('div')
     var taskTab = document.createElement('input')
     taskTab.setAttribute('type', 'checkbox')
     taskTab.setAttribute('class', 'task')
     taskTab.setAttribute('id', String(newTask.title))
-    
+
     var newlabel = document.createElement("Label");
     newlabel.setAttribute("for", String(newTask.title))
-    newlabel.setAttribute("class", 'task')
+    newlabel.setAttribute("class", 'task_l')
     newlabel.innerHTML = String(newTask.title);
 
-    tasks.insertBefore(taskTab, addtaskBtn)
-    tasks.insertBefore(newlabel, addtaskBtn)
-
-    taskTab.addEventListener('change', function () {
-        if (this.checked) {
-            changeStatus(currentActiveProject, this)
-            console.log(all_projects)
-        } else {
-            changeStatus(currentActiveProject, this)
-            console.log(all_projects)
-        }
-    })
+    divider.appendChild(taskTab)
+    divider.appendChild(newlabel)
+    divider.appendChild(deleteBtnT)
+    tasks.insertBefore(divider, addtaskBtn)
 }
 //some bugs with checked boxes
 export default addTask
